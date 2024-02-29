@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: urlshortener-api
+  name: urlshortener-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      io.kompose.service: urlshortener-api
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: urlshortener-api
+    spec:
+      containers:
+      - env:
+        - name: DB_HOST
+        - value: postgresql
+        - name: DB_NAME
+        - value: webservices
+        - name: DB_USERNAME
+        - value: postgres
+        - name: DB_PASSWORD
+        - value: web-services-g7
+        image: tyagipragya/urlshortener-app:latest
+        imagePullPolicy: IfNotPresent
+        name: urlshortener-api
+        ports:
+        - containerPort: 5000
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}
